@@ -1,0 +1,12 @@
+body {
+    font-family: monospace;
+    background: #191724aa;
+    color: #e0def4;
+    position: relative;
+}
+
+#app {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
