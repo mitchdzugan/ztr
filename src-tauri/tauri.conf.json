@@ -13,6 +13,7 @@
     "windows": [
       {
         "title": "ztr",
+        "create": false,
         "transparent": true,
 	"skipTaskbar": true,
 	"decorations": false,

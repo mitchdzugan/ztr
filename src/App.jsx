@@ -1,49 +1,51 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
+import { useState, useEffect, createElement } from "react";
 import { invoke } from "@tauri-apps/api/core";
+import { emit, listen } from "@tauri-apps/api/event";
 import "./App.css";
 
 function App() {
-  const [greetMsg, setGreetMsg] = useState("");
-  const [name, setName] = useState("");
+  const [renderData, setRenderData] = useState({});
 
-  async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    setGreetMsg(await invoke("greet", { name }));
-  }
+  const setupRenderListener = () => {
+    const unlistenPromise = listen('render', (event) => {
+      const { render_hash, render_string, is_first_render } = event;
+      const markup = JSON.parse(render_string);
+      setRenderData({ markup, hash: render_hash });
+    }).then((unlisten) => {
+      emit('ready', {});
+      return unlisten;
+    });
+    return () => {
+      unlistenPromise.then((unlisten) => unlisten());
+    };
+  };
+  useEffect(setupRenderListener, []);
+
+  const hasRenderData = !!renderData.markup;
+  const markup = renderData.markup || 'span';
+  const hash = renderData.hash;
+
+  useEffect(() => {
+    if (!hasRenderData) { return; }
+    const content = document.getElementById("content");
+    const width = content.clientWidth;
+    const height = content.clientHeight;
+    invoke('post_render', { width, height, hash });
+    return;
+  });
+
+  const toEl = (chunk) => {
+    if (!Array.isArray(chunk)) { return chunk; }
+    const [tagSpec, ...childrenChunks] = chunk;
+    const [tag, ...classParts] = tagSpec.split(".");
+    const className = classParts.join(" ");
+    const children = childrenChunks.map(toEl);
+    return createElement(tag, { className, children });
+  };
 
   return (
     <main className="container">
-      <h1>Welcome to Tauri + React</h1>
-
-      <div className="row">
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo vite" alt="Vite logo" />
-        </a>
-        <a href="https://tauri.app" target="_blank">
-          <img src="/tauri.svg" className="logo tauri" alt="Tauri logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <p>Click on the Tauri, Vite, and React logos to learn more.</p>
-
-      <form
-        className="row"
-        onSubmit={(e) => {
-          e.preventDefault();
-          greet();
-        }}
-      >
-        <input
-          id="greet-input"
-          onChange={(e) => setName(e.currentTarget.value)}
-          placeholder="Enter a name..."
-        />
-        <button type="submit">Greet</button>
-      </form>
-      <p>{greetMsg}</p>
+      <div id="content"> {toEl(markup)} </div>
     </main>
   );
 }
