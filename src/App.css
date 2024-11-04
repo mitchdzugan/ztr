@@ -14,8 +14,8 @@
   --cyan: #ebbcba;
 
   font-family: monospace;
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 14px;
+  line-height: 21px;
   font-weight: 400;
 
   background: var(--background-transparency);
@@ -183,21 +183,26 @@ pre {
   margin: 0;
 }
 
+.mh0 {
+  margin-left: 0;
+  margin-right: 0;
+}
+
 .mauto {
   margin: auto;
 }
 
 .bigger {
-  font-size: 1rem;
-  line-height: 1.5rem;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
 }
 
 .smaller {
-  font-size: 0.625rem;
+  font-size: 0.75rem;
   line-height: 1rem;
 }
 
 .normal {
-  font-size: 0.75rem;
-  line-height: 1.25rem;
+  font-size: 1.rem;
+  line-height: 1.5rem;
 }
