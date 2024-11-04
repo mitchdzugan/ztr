@@ -3,8 +3,6 @@ import { invoke } from "@tauri-apps/api/core";
 import { emit, listen } from "@tauri-apps/api/event";
 import "./App.css";
 
-invoke('show_window', {});
-
 const resizeHandler = () => { invoke('on_resize', {}); };
 
 function App() {

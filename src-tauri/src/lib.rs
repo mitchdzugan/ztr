@@ -36,6 +36,7 @@ async fn post_render(
     let finalHeight = height + 40;
     let size = tauri::PhysicalSize { width: finalWidth, height: finalHeight };
     window.set_size(size);
+    window.show();
     let mut size_file = handle.path().resolve("ztr", BaseDirectory::Data).unwrap();
     size_file.push(hash);
     let contents = serde_json::to_string(&size).unwrap();
@@ -66,6 +67,38 @@ pub fn setup<R: tauri::Runtime>(raw_app: &mut App<R>) -> Result<(), Box<dyn Erro
         let mut window_option: Option<WebviewWindow<R>> = None;
         let mut stdin_done = false;
         let mut is_first_render = true;
+        let (tx, rx) = tokio::sync::oneshot::channel::<()>();
+        let mut config = app
+            .config()
+            .app
+            .windows
+            .get(0)
+            .unwrap()
+            .clone();
+        /*
+        let mut size_file = data_dir.clone();
+        size_file.push(string_hash.clone());
+        match tokio::fs::read_to_string(size_file).await {
+            Ok(contents) => {
+                match serde_json::from_str::<tauri::PhysicalSize<f64>>(&contents) {
+                    Ok(size) => {
+                        config.width = size.width;
+                        config.height = size.height;
+                    },
+                    _ => {},
+                }
+            },
+            _ => {},
+        };
+        */
+        app.once("ready", |_| {
+            tx.send(());
+        });
+        let window = tauri::WebviewWindowBuilder::from_config(
+            &app, &config
+        ).unwrap().build().unwrap();
+        window_option = Some(window);
+        let _ = rx.await;
         loop {
             let mut buf: Vec<u8> = Vec::new();
             loop {
@@ -93,41 +126,6 @@ pub fn setup<R: tauri::Runtime>(raw_app: &mut App<R>) -> Result<(), Box<dyn Erro
                 "render" => {
                     let render_string = &action.args[0];
                     let string_hash = hash_string(render_string);
-                    match window_option {
-                        Some(_) => {},
-                        None => {
-                            let (tx, rx) = tokio::sync::oneshot::channel::<()>();
-                            let mut config = app
-                                .config()
-                                .app
-                                .windows
-                                .get(0)
-                                .unwrap()
-                                .clone();
-                            let mut size_file = data_dir.clone();
-                            size_file.push(string_hash.clone());
-                            match tokio::fs::read_to_string(size_file).await {
-                                Ok(contents) => {
-                                    match serde_json::from_str::<tauri::PhysicalSize<f64>>(&contents) {
-                                        Ok(size) => {
-                                            config.width = size.width;
-                                            config.height = size.height;
-                                        },
-                                        _ => {},
-                                    }
-                                },
-                                _ => {},
-                            };
-                            let window = tauri::WebviewWindowBuilder::from_config(
-                                &app, &config
-                            ).unwrap().build().unwrap();
-                            window_option = Some(window);
-                            app.once("ready", |_| {
-                                tx.send(());
-                            });
-                            let _ = rx.await;
-                        }
-                    }
                     let render_payload = RenderPayload {
                         render_string: render_string.clone(),
                         string_hash,
