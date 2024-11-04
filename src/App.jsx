@@ -3,14 +3,18 @@ import { invoke } from "@tauri-apps/api/core";
 import { emit, listen } from "@tauri-apps/api/event";
 import "./App.css";
 
+invoke('show_window', {});
+
+const resizeHandler = () => { invoke('on_resize', {}); };
+
 function App() {
   const [renderData, setRenderData] = useState({});
 
   const setupRenderListener = () => {
     const unlistenPromise = listen('render', (event) => {
-      const { render_hash, render_string, is_first_render } = event;
+      const { string_hash, render_string, is_first_render } = event.payload;
       const markup = JSON.parse(render_string);
-      setRenderData({ markup, hash: render_hash });
+      setRenderData({ markup, hash: string_hash });
     }).then((unlisten) => {
       emit('ready', {});
       return unlisten;
@@ -21,8 +25,14 @@ function App() {
   };
   useEffect(setupRenderListener, []);
 
+  const setupResizeListener = () => {
+    window.addEventListener('resize', resizeHandler);
+    return () => { window.removeEventListener('resize', resizeHandler); };
+  };
+  useEffect(setupResizeListener, []);
+
   const hasRenderData = !!renderData.markup;
-  const markup = renderData.markup || 'span';
+  const markup = renderData.markup || '';
   const hash = renderData.hash;
 
   useEffect(() => {
@@ -40,7 +50,8 @@ function App() {
     const [tag, ...classParts] = tagSpec.split(".");
     const className = classParts.join(" ");
     const children = childrenChunks.map(toEl);
-    return createElement(tag, { className, children });
+    const props = children.length ? { className, children } : { className };
+    return createElement(tag, props);
   };
 
   return (

@@ -14,9 +14,10 @@
       {
         "title": "ztr",
         "create": false,
+        "visible": false,
         "transparent": true,
-	"skipTaskbar": true,
-	"decorations": false,
+        "skipTaskbar": true,
+        "decorations": false,
         "center": true,
         "width": 800,
         "height": 600
