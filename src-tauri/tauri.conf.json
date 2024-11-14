@@ -14,7 +14,7 @@
       {
         "title": "ztr",
         "create": false,
-        "visible": false,
+        "visible": true,
         "transparent": true,
         "skipTaskbar": true,
         "decorations": false,

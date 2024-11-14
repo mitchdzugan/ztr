@@ -9,6 +9,7 @@ function App() {
   const [renderData, setRenderData] = useState({});
 
   const setupRenderListener = () => {
+    document.querySelector(':root').style.opacity = '1';
     const unlistenPromise = listen('render', (event) => {
       const { string_hash, render_string, is_first_render } = event.payload;
       const markup = JSON.parse(render_string);

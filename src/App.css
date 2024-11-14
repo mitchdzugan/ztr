@@ -18,12 +18,14 @@
   line-height: 21px;
   font-weight: 400;
 
+  opacity: 0;
   box-sizing: border-box;
   border: 2px solid #a487c7;
   height: 100vh;
   width: 100vw;
   background: var(--background-transparency);
   color: var(--foreground);
+  transition: opacity 0.25s ease-in-out;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
