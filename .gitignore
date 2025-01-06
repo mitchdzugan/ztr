@@ -1,0 +1,12 @@
+/target
+/result
+.cpcache
+.lsp
+.nrepl-port
+.clj-kondo
+.calva
+.idea
+*.iml
+*.log
+.rebel_readline_history
+.enrich-classpath-deps-repl

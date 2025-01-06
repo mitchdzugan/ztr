@@ -1,0 +1,17 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="zflake-dev nrepl" type="ClojureREPL" factoryName="Remote" activateToolWindowBeforeRun="false">
+    <module name="ztr-clj" />
+    <setting name="displayName" value="zflake-dev nrepl" />
+    <setting name="host" value="" />
+    <setting name="port" value="0" />
+    <setting name="replType" value="NREPL" />
+    <setting name="configType" value="PORT_FILE" />
+    <setting name="replPortFileType" value="STANDARD" />
+    <setting name="customPortFile" value="" />
+    <setting name="fixLineNumbers" value="false" />
+    <setting name="useHeartbeat" value="true" />
+    <setting name="focusEditor" value="false" />
+    <setting name="urlFile" value="" />
+    <method v="2" />
+  </configuration>
+</component>
