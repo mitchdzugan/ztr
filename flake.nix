@@ -46,8 +46,7 @@
           "ztr"
           [pkgs.rlwrap packages.ztr-with-libs]
           ''
-            # "${pkgs.rlwrap}/bin/rlwrap"
-            ${packages.ztr-with-libs}/bin/ztr "$@"
+            "${pkgs.rlwrap}/bin/rlwrap" ${packages.ztr-with-libs}/bin/ztr "$@"
           '';
         packages.ztr-with-libs = pkgs.stdenv.mkDerivation {
           pname = "ztr";
