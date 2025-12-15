@@ -66,6 +66,7 @@
         };
         packages.ztr-unwrapped = buildZtrApp {
           builder-extra-inputs = ztrBuildInputs;
+          nativeImage.graalvm = pkgs.graalvmPackages.graalvm-ce;
           nativeImage.enable = true;
           nativeImage.extraNativeImageBuildArgs = [
             "--initialize-at-build-time"
@@ -100,12 +101,12 @@
         packages.build-uberjar = buildZtrApp {};
         packages.trace-run = zn.uuFlakeWrap (zn.writeBashScriptBin'
           "trace-run"
-          (ztrBuildInputs ++ [ packages.build-uberjar pkgs.graalvm-ce ])
+          (ztrBuildInputs ++ [ packages.build-uberjar pkgs.graalvmPackages.graalvm-ce ])
           ''
             export LD_LIBRARY_PATH="${rtLibPath}"
             gvmh="$GRAALVM_HOME"
             if [ ! -f "$gmvh/bin/java" ]; then
-              gmvh="${pkgs.graalvm-ce}"
+              gmvh="${pkgs.graalvmPackages.graalvm-ce}"
             fi
             jar_path=$(cat "${packages.build-uberjar}/nix-support/jar-path")
             $gmvh/bin/java \

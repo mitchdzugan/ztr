@@ -251,11 +251,11 @@
         "rep": "rep"
       },
       "locked": {
-        "lastModified": 1765785373,
-        "narHash": "sha256-hdGvF0h6V0/o5qtmApY0vLl7vqPc5Q0pIO/645Ed0ZU=",
+        "lastModified": 1765786699,
+        "narHash": "sha256-q7KSGjgnNCf17KB5Vj/N7UvK0iW5Y3vN3YhYRN3f/SY=",
         "owner": "mitchdzugan",
         "repo": "zn.nix",
-        "rev": "481b85b6201953d681a128230479f939a2ec3628",
+        "rev": "3b18f292e6d317a27fed40be9c666d94f56c838d",
         "type": "github"
       },
       "original": {
