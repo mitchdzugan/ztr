@@ -527,7 +527,7 @@
                                (assoc :dims dims)))
           (loop []
             (when (not (GLFW/glfwWindowShouldClose window))
-              (.clear canvas (color 0xdd191724))
+              (.clear canvas (color 0xff191724))
               (let [layer (.save canvas)]
                 (draw dims canvas)
                 (.restoreToCount canvas layer))

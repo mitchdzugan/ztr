@@ -42,12 +42,13 @@
         };
       in rec {
         packages.default = packages.ztr;
-        packages.ztr = zn.writeBashScriptBin'
+        packages._ztr = zn.writeBashScriptBin'
           "ztr"
           [pkgs.rlwrap packages.ztr-with-libs]
           ''
             "${pkgs.rlwrap}/bin/rlwrap" ${packages.ztr-with-libs}/bin/ztr "$@"
           '';
+        packages.ztr = packages._ztr // { pname = "ztr"; };
         packages.ztr-with-libs = pkgs.stdenv.mkDerivation {
           pname = "ztr";
           inherit version;
