@@ -13,13 +13,13 @@
         zn = zn-nix.mk-zn system;
         ztrRtDeps = with pkgs; [
           fontconfig.lib
-          xorg.libX11
-          xorg.libXxf86vm
-          xorg.libXext
-          xorg.libXtst
-          xorg.libXi
-          xorg.libXcursor
-          xorg.libXrandr
+          libx11
+          libxxf86vm
+          libxext
+          libxtst
+          libxi
+          libxcursor
+          libxrandr
           libGL
           stdenv.cc.cc.lib
         ];
@@ -32,7 +32,7 @@
           builder-extra-inputs = ztrBuildInputs;
           builder-preBuild = with pkgs; ''
             export LD_LIBRARY_PATH=${zn.mkLibPath [
-              buildPackages.stdenv.cc.cc.lib fontconfig.lib xorg.libX11 libGL
+              buildPackages.stdenv.cc.cc.lib fontconfig.lib libx11 libGL
             ]}
           '';
         };
