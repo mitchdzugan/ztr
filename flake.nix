@@ -9,7 +9,7 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         # version = "202611131002";
-        lastModifiedDate = self.lastModifiedDate or self.lastModified;
+        lastModifiedDate = self.lastModified;
         version = builtins.substring 0 8 lastModifiedDate;
         pkgs = nixpkgs.legacyPackages.${system};
         zn = zn-nix.mk-zn system;
