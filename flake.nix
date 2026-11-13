@@ -8,8 +8,7 @@
   outputs = { self, nixpkgs, zn-nix, flake-utils, ... }:
     flake-utils.lib.eachDefaultSystem (system:
       let
-        # version = "202611131002";
-        lastModifiedDate = self.lastModified;
+        lastModifiedDate = self.lastModifiedDate or self.lastModified or "19700101";
         version = builtins.substring 0 8 lastModifiedDate;
         pkgs = nixpkgs.legacyPackages.${system};
         zn = zn-nix.mk-zn system;
